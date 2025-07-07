@@ -68,6 +68,12 @@ UPER is a systematic approach to problem-solving that helps you break down compl
 
 ## 🧪 Testing Your Solution
 
+### Setup (Required for Node.js testing)
+If you plan to use Node.js testing, first install the dependencies:
+```bash
+npm install
+```
+
 ### Option 1: Browser Testing
 1. Open `test.html` in your web browser
 2. Open the browser's developer console (F12)
