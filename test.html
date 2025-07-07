@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Repeated Word - Test Runner</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .test-container {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .console-output {
+            background-color: #000;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 2px solid #333;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background-color: #2d2d2d;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background-color: #0f5132;
+            color: #d1e7dd;
+            border: 1px solid #0a3622;
+        }
+        
+        .status.error {
+            background-color: #58151c;
+            color: #f8d7da;
+            border: 1px solid #842029;
+        }
+        
+        .status.warning {
+            background-color: #664d03;
+            color: #fff3cd;
+            border: 1px solid #997404;
+        }
+        
+        code {
+            background-color: #3d3d3d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ff6b6b;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><span class="emoji">🧪</span> Most Repeated Word - Test Runner</h1>
+        <p>Test your implementation in the browser!</p>
+    </div>
+    
+    <div class="instructions">
+        <h2><span class="emoji">📋</span> Instructions</h2>
+        <ol>
+            <li>Implement your <code>getMostRepeatedWord</code> function in the solution.js file</li>
+            <li>Click "Run Tests" to test your implementation</li>
+            <li>Check the console output below for detailed results</li>
+            <li>Debug and iterate until all tests pass!</li>
+        </ol>
+        
+        <p><strong>Tip:</strong> Open your browser's Developer Console (F12) to see additional debug information!</p>
+    </div>
+    
+    <div class="test-container">
+        <h2><span class="emoji">🎮</span> Test Controls</h2>
+        <button class="button" onclick="runAllTests()">Run Tests</button>
+        <button class="button" onclick="clearOutput()">Clear Output</button>
+        <button class="button" onclick="testSingleExample()">Test Example Only</button>
+        
+        <div id="status"></div>
+        
+        <h3><span class="emoji">📺</span> Console Output</h3>
+        <div id="console" class="console-output">
+            Click "Run Tests" to see results here...
+        </div>
+    </div>
+
+    <script src="solution.js"></script>
+    
+    <script>
+        const originalConsoleLog = console.log;
+        const consoleElement = document.getElementById('console');
+        const statusElement = document.getElementById('status');
+        
+        function captureConsole() {
+            let output = '';
+            console.log = function(...args) {
+                const message = args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+                ).join(' ');
+                output += message + '\n';
+                originalConsoleLog.apply(console, args);
+            };
+            return () => {
+                console.log = originalConsoleLog;
+                return output;
+            };
+        }
+        
+        function clearOutput() {
+            consoleElement.textContent = 'Output cleared. Click "Run Tests" to run again...';
+            statusElement.innerHTML = '';
+        }
+        
+        function showStatus(message, type) {
+            statusElement.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function testSingleExample() {
+            const restoreConsole = captureConsole();
+            
+            try {
+                if (typeof getMostRepeatedWord !== 'function') {
+                    throw new Error('getMostRepeatedWord function not found! Make sure it\'s implemented in solution.js');
+                }
+                
+                const testInput = "Almost nothing was more annoying than having our wasted time wasted on something not worth wasting it on.";
+                const expected = "wasted: 2";
+                const result = getMostRepeatedWord(testInput);
+                
+                console.log('🧪 Testing Single Example');
+                console.log('=' * 30);
+                console.log(`Input: "${testInput}"`);
+                console.log(`Expected: "${expected}"`);
+                console.log(`Your Result: "${result}"`);
+                
+                if (result === expected) {
+                    console.log('✅ Example test PASSED!');
+                    showStatus('✅ Example test passed!', 'success');
+                } else {
+                    console.log('❌ Example test FAILED!');
+                    showStatus('❌ Example test failed. Check your implementation.', 'error');
+                }
+                
+            } catch (error) {
+                console.log('💥 Error running example test:');
+                console.log(error.message);
+                showStatus(`💥 Error: ${error.message}`, 'error');
+            }
+            
+            const output = restoreConsole();
+            consoleElement.textContent = output;
+        }
+        
+        function runAllTests() {
+            const restoreConsole = captureConsole();
+            
+            try {
+                if (typeof getMostRepeatedWord !== 'function') {
+                    throw new Error('getMostRepeatedWord function not found! Make sure it\'s implemented in solution.js');
+                }
+
+                const results = runTestSuite();
+                
+                if (results.failed === 0) {
+                    showStatus(`🎉 All ${results.total} tests passed! Excellent work!`, 'success');
+                } else {
+                    showStatus(`📊 ${results.passed}/${results.total} tests passed. ${results.failed} need attention.`, 'warning');
+                }
+                
+            } catch (error) {
+                console.log('💥 Error running tests:');
+                console.log(error.message);
+                console.log('\nMake sure your getMostRepeatedWord function is properly implemented!');
+                showStatus(`💥 Error: ${error.message}`, 'error');
+            }
+            
+            const output = restoreConsole();
+            consoleElement.textContent = output;
+        }
+
+        function runTestSuite() {
+            const tests = [
+                {
+                    name: "Example from problem description",
+                    input: "Almost nothing was more annoying than having our wasted time wasted on something not worth wasting it on.",
+                    expected: "wasted: 2",
+                    description: "Should find 'wasted' appears 2 times"
+                },
+                {
+                    name: "No repeated words",
+                    input: "Hello world how are you",
+                    expected: "hello: 1",
+                    description: "Should return first word when no repeats"
+                },
+                {
+                    name: "Case insensitive counting",
+                    input: "The the THE",
+                    expected: "the: 3",
+                    description: "Should treat different cases as same word"
+                },
+                {
+                    name: "Mixed case with repeats",
+                    input: "Hello HELLO hello World",
+                    expected: "hello: 3",
+                    description: "Should count mixed case correctly"
+                },
+                {
+                    name: "Punctuation removal",
+                    input: "test, test! test? test.",
+                    expected: "test: 4",
+                    description: "Should ignore punctuation when counting"
+                },
+                {
+                    name: "Complex punctuation",
+                    input: '"Hello," she said. "Hello!" he replied.',
+                    expected: "hello: 2",
+                    description: "Should handle quotes and multiple punctuation"
+                },
+                {
+                    name: "Empty string",
+                    input: "",
+                    expected: "",
+                    description: "Should handle empty string"
+                },
+                {
+                    name: "Single word",
+                    input: "onlyword",
+                    expected: "onlyword: 1",
+                    description: "Should handle single word"
+                },
+                {
+                    name: "Only punctuation",
+                    input: "!@#$%^&*()",
+                    expected: "",
+                    description: "Should handle string with only punctuation"
+                },
+                {
+                    name: "Multiple spaces",
+                    input: "word    word     word",
+                    expected: "word: 3",
+                    description: "Should handle multiple spaces between words"
+                },
+                {
+                    name: "Tie - return first occurrence",
+                    input: "apple banana apple banana cherry",
+                    expected: "apple: 2",
+                    description: "When tied, should return word that appeared first"
+                }
+            ];
+            
+            console.log("🧪 Running Tests for getMostRepeatedWord\n");
+            console.log("=".repeat(50));
+            
+            let passed = 0;
+            let failed = 0;
+            
+            tests.forEach((test, index) => {
+                try {
+                    const result = getMostRepeatedWord(test.input);
+                    const success = result === test.expected;
+                    
+                    if (success) {
+                        console.log(`✅ Test ${index + 1}: ${test.name}`);
+                        console.log(`   Input: "${test.input}"`);
+                        console.log(`   Expected: "${test.expected}"`);
+                        console.log(`   Got: "${result}"`);
+                        console.log(`   ✓ ${test.description}\n`);
+                        passed++;
+                    } else {
+                        console.log(`❌ Test ${index + 1}: ${test.name}`);
+                        console.log(`   Input: "${test.input}"`);
+                        console.log(`   Expected: "${test.expected}"`);
+                        console.log(`   Got: "${result}"`);
+                        console.log(`   ✗ ${test.description}\n`);
+                        failed++;
+                    }
+                } catch (error) {
+                    console.log(`💥 Test ${index + 1}: ${test.name}`);
+                    console.log(`   Error: ${error.message}`);
+                    console.log(`   Input: "${test.input}"`);
+                    console.log(`   ✗ ${test.description}\n`);
+                    failed++;
+                }
+            });
+            
+            console.log("=".repeat(50));
+            console.log(`📊 Test Results: ${passed} passed, ${failed} failed`);
+            
+            if (failed === 0) {
+                console.log("🎉 All tests passed! Great job!");
+            } else {
+                console.log(`🔧 ${failed} test(s) need attention. Keep debugging!`);
+            }
+            
+            return { passed, failed, total: tests.length };
+        }
+        
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                console.log('Welcome to the Most Repeated Word test runner!');
+                console.log('Implement your solution in solution.js and click "Run Tests"');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
