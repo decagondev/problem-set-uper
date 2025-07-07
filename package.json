@@ -1,0 +1,37 @@
+{
+  "name": "most-repeated-word-problem",
+  "version": "1.0.0",
+  "description": "A coding exercise to find the most repeated word in a string using the UPER methodology",
+  "main": "solution.js",
+  "scripts": {
+    "test": "node test.js",
+    "test:watch": "nodemon test.js",
+    "start": "node solution.js"
+  },
+  "keywords": [
+    "javascript",
+    "algorithm",
+    "string-processing",
+    "hash-map",
+    "counting",
+    "uper",
+    "problem-solving",
+    "coding-exercise"
+  ],
+  "author": "Tom Tarpey @decagondev",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/decagondev/problem-set-uper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/decagondev/problem-set-uper/issues"
+  },
+  "homepage": "https://github.com/decagondev/problem-set-uper#readme"
+}
